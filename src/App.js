@@ -8,15 +8,15 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Te damos la bienvenida a Sonomed!
         </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="/calendar"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Reservar Hora
         </a>
       </header>
     </div>
