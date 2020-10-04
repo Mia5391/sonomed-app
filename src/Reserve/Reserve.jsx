@@ -5,18 +5,26 @@ import '@rmwc/grid/styles'
 import { Grid, GridCell } from 'rmwc';
 import './Reserve.css';
 // import logo from '../logo.svg';
+const cal = (apptType) => {
+    return {
+        pathname: '/calendar/2',
+        state: {
+            apptType
+        }
+    }
+}
 
 const Reserve1 = () => (
     <div>
         <p>Hello World 1</p>
-        <Link to='/calendar/2'>
+        
             <Grid>
-                <GridCell span={12}> 15min appt</GridCell>
-                <GridCell span={12}> 20min appt</GridCell>
-                <GridCell span={12}> 45min appt</GridCell>
-                <GridCell span={12}> 45min appt</GridCell>
+                <GridCell span={12}> <Link to={cal(1)}>15min appt</Link></GridCell>
+                <GridCell span={12}> <Link to={cal(2)}>20min appt</Link></GridCell>
+                <GridCell span={12}> <Link to={cal(3)}>45min appt</Link></GridCell>
+                <GridCell span={12}> <Link to={cal(4)}>45min appt</Link></GridCell>
             </Grid>
-        </Link>
+        
         <Link to='/'>
             <Button outlined >Back</Button>
         </Link>
@@ -28,10 +36,14 @@ const Reserve1 = () => (
 )
 
 
-const Reserve2 = () =>
+const Reserve2 = (nextProps) =>
 
     <div>
         <p>Hello World 2</p>
+        <p>{nextProps.location.state.apptType}</p>
+
+
+        
         <Link to='/calendar/1'>
             <Button outlined >Back</Button></Link>
         <Link to='/calendar/3'>
