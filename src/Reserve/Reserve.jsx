@@ -8,32 +8,31 @@ import './Reserve.css';
 import moment from 'moment';
 import ReactTimeslotCalendar from '../timeslots/js/react-timeslot-calendar.jsx';
 
-const cal = (apptType) => {
+const goToStep = (step, state) => {
     return {
-        pathname: '/calendar/2',
-        state: {
-            apptType
-        }
+        pathname: `/calendar/${step}`,
+        state
     }
 }
 
-const Reserve1 = () => (
+const stateGenerator = (changeState, currState) => {
+    return Object.assign({}, currState, changeState);
+}
+
+const Reserve1 = (nextProps) => (
     <div>
         <p>Hello World 1</p>
 
         <Grid>
-            <GridCell span={12}> <Link to={cal(15)}>15min appt</Link></GridCell>
-            <GridCell span={12}> <Link to={cal(20)}>20min appt</Link></GridCell>
-            <GridCell span={12}> <Link to={cal(45)}>45min appt</Link></GridCell>
-            <GridCell span={12}> <Link to={cal(45)}>45min appt</Link></GridCell>
+            <GridCell span={12}> <Link to={goToStep(2, stateGenerator({apptType: 15}, nextProps.location.state))}>15min appt</Link></GridCell>
+            <GridCell span={12}> <Link to={goToStep(2, stateGenerator({apptType: 20}, nextProps.location.state))}>20min appt</Link></GridCell>
+            {/* <GridCell span={12}> <Link to={goToStep(2, {apptType: 45})}>45min appt</Link></GridCell>
+            <GridCell span={12}> <Link to={goToStep(2, {apptType: 45})}>45min appt</Link></GridCell> */}
         </Grid>
 
         <Link to='/'>
             <Button outlined >Back</Button>
         </Link>
-
-
-
     </div>
 
 )
@@ -43,71 +42,100 @@ const timeslotProps = { format: 'h:mm', showFormat: 'h:mm A'}
 const timeSlotGen = (slotSize, startTime, maxSlots) => {
     const startMoment = moment(startTime, timeslotProps.format);
     const timeslots = [...Array(maxSlots)].map((slot, i)=>{
-        console.log(slotSize*i);
         return [moment(startMoment).add(slotSize*i, 'minutes').format(timeslotProps.format), moment(startMoment).add(slotSize*(i+1), 'minutes').format(timeslotProps.format)];
     });
-    console.log(timeslots);
     return timeslots;
 }
 
-let onSelectTimeslot = (allTimeslots, lastSelectedTimeslot) => {
-    /**
-     * All timeslot objects include `startDate` and `endDate`.
-   
-     * It is important to note that if timelots provided contain a single
-     * value (e.g: timeslots = [['8'], ['9', '10']) then only `startDate` is filled up with
-     * the desired information.
-     */
-    // console.log(allTimeslots);
-    console.log(lastSelectedTimeslot); // MomentJS object.
-   
-  }
 
-const Reserve2 = (nextProps) =>
+class Reserve2 extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = this.props.location.state;
+    }
+
+    render() {
+        
+        this.onSelectTimeslot = (allTimeslots, lastSelectedTimeslot) => {
+            this.setState({selectedTimeslot: {
+                startDate: lastSelectedTimeslot.startDate.format(),
+                endDate: lastSelectedTimeslot.endDate.format()
+            }});
+        }
+
+        return (
+        <div>
+            <p>Hello World 2</p>
+            <p>{this.state.apptType}</p>
+
+            <ReactTimeslotCalendar
+                initialDate={moment().format()}
+                timeslotProps = {timeslotProps}
+                timeslots = {timeSlotGen(this.state.apptType, '12', 8*(60/this.state.apptType))}
+                onSelectTimeslot = {this.onSelectTimeslot}
+            />
+
+            <Link to={goToStep(1, this.state)}>
+                <Button outlined >Back</Button></Link>
+            <Link to={goToStep(3, this.state)}>
+                <Button raised>Next</Button></Link>
+        </div>
+        )
+    }
+}
+
+// const Reserve2 = (nextProps) =>
+
+//     <div>
+//         <p>Hello World 2</p>
+//         <p>{nextProps.location.state.apptType}</p>
+
+//         <ReactTimeslotCalendar
+//             initialDate={moment().format()}
+//             timeslotProps = {timeslotProps}
+//             timeslots = {timeSlotGen(nextProps.location.state.apptType, '12', 8*(60/nextProps.location.state.apptType))}
+//             onSelectTimeslot = {onSelectTimeslot}
+//         />
+
+//         <Link to={goToStep(1, stateGenerator({}, nextProps.location.state))}>
+//             <Button outlined >Back</Button></Link>
+//         <Link to={goToStep(3, stateGenerator({}, nextProps.location.state))}>
+//             <Button raised>Next</Button></Link>
+
+
+//     </div>
+
+const Reserve3 = (nextProps) =>
     <div>
-        <p>Hello World 2</p>
-        <p>{nextProps.location.state.apptType}</p>
-
-        <ReactTimeslotCalendar
-            initialDate={moment().format()}
-            timeslotProps = {timeslotProps}
-            timeslots = {timeSlotGen(nextProps.location.state.apptType, '12', 8*(60/nextProps.location.state.apptType))}
-            onSelectTimeslot = {onSelectTimeslot}
-        />
-
-        <Link to='/calendar/1'>
+        <p>Hello World 3</p>
+        <p>{JSON.stringify(nextProps.location.state)}</p>
+        <Link to={goToStep(2, nextProps.location.state)}>
             <Button outlined >Back</Button></Link>
-        <Link to='/calendar/3'>
+        <Link to={goToStep(4, nextProps.location.state)}>
             <Button raised>Next</Button></Link>
 
 
     </div>
 
-const Reserve3 = () =>
-    <div>
-        <p>Hello World 3</p>
-        <Link to='/calendar/2'>
-            <Button outlined >Back</Button></Link>
-        <Link to='/calendar/4'><Button raised>Next</Button></Link>
-
-
-    </div>
-
-const Reserve4 = () =>
+const Reserve4 = (nextProps) =>
     <div>
         <p>Hello World 4</p>
-        <Link to='/calendar/3'>
+        <p>{JSON.stringify(nextProps.location.state)}</p>
+        <Link to={goToStep(3, nextProps.location.state)}>
             <Button outlined >Back</Button></Link>
-        <Link to='/calendar/5'><Button raised>Next</Button></Link>
+        <Link to={goToStep(5, nextProps.location.state)}>
+            <Button raised>Next</Button></Link>
 
 
     </div>
 
-const Reserve5 = () =>
+const Reserve5 = (nextProps) =>
     <div>
         <p>Hello World 5</p>
-        <Link to='/calendar/4'><Button outlined >Back</Button></Link>
+        <p>{JSON.stringify(nextProps.location.state)}</p>
+        <Link to={goToStep(4, nextProps.location.state)}>
+            <Button outlined >Back</Button></Link>
         <Link to='/'><Button raised>Next</Button></Link>
 
 
