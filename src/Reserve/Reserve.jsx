@@ -38,13 +38,13 @@ const Reserve1 = () => (
 
 )
 
-const timeslotProps = { format: 'h:mm A', showFormat: 'h:mm A'}
+const timeslotProps = { format: 'h:mm', showFormat: 'h:mm A'}
 
 const timeSlotGen = (slotSize, startTime, maxSlots) => {
     const startMoment = moment(startTime, timeslotProps.format);
     const timeslots = [...Array(maxSlots)].map((slot, i)=>{
         console.log(slotSize*i);
-        return [moment(startMoment).add(slotSize*i, 'minutes'), moment(startMoment).add(slotSize*(i+1), 'minutes')];
+        return [moment(startMoment).add(slotSize*i, 'minutes').format(timeslotProps.format), moment(startMoment).add(slotSize*(i+1), 'minutes').format(timeslotProps.format)];
     });
     console.log(timeslots);
     return timeslots;
@@ -58,7 +58,8 @@ let onSelectTimeslot = (allTimeslots, lastSelectedTimeslot) => {
      * value (e.g: timeslots = [['8'], ['9', '10']) then only `startDate` is filled up with
      * the desired information.
      */
-    console.log(lastSelectedTimeslot.startDate); // MomentJS object.
+    // console.log(allTimeslots);
+    console.log(lastSelectedTimeslot); // MomentJS object.
    
   }
 
@@ -71,7 +72,7 @@ const Reserve2 = (nextProps) =>
         <ReactTimeslotCalendar
             initialDate={moment().format()}
             timeslotProps = {timeslotProps}
-            timeslots = {timeSlotGen(nextProps.location.state.apptType, '12:00 P', 8*(60/nextProps.location.state.apptType))}
+            timeslots = {timeSlotGen(nextProps.location.state.apptType, '12', 8*(60/nextProps.location.state.apptType))}
             onSelectTimeslot = {onSelectTimeslot}
         />
 
