@@ -1,8 +1,5 @@
 import React from 'react';
-import { Typography } from '@rmwc/typography';
-import moment from 'moment';
-import ReactTimeslotCalendar from 'react-timeslot-calendar';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from 'rmwc';
 import './Landing.css';
 // import logo from '../logo.svg';

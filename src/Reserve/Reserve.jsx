@@ -6,7 +6,7 @@ import { Grid, GridCell } from 'rmwc';
 import './Reserve.css';
 // import logo from '../logo.svg';
 import moment from 'moment';
-import ReactTimeslotCalendar from 'react-timeslot-calendar';
+import ReactTimeslotCalendar from '../timeslots/js/react-timeslot-calendar.jsx';
 
 const cal = (apptType) => {
     return {
@@ -50,6 +50,18 @@ const timeSlotGen = (slotSize, startTime, maxSlots) => {
     return timeslots;
 }
 
+let onSelectTimeslot = (allTimeslots, lastSelectedTimeslot) => {
+    /**
+     * All timeslot objects include `startDate` and `endDate`.
+   
+     * It is important to note that if timelots provided contain a single
+     * value (e.g: timeslots = [['8'], ['9', '10']) then only `startDate` is filled up with
+     * the desired information.
+     */
+    console.log(lastSelectedTimeslot.startDate); // MomentJS object.
+   
+  }
+
 const Reserve2 = (nextProps) =>
 
     <div>
@@ -60,6 +72,7 @@ const Reserve2 = (nextProps) =>
             initialDate={moment().format()}
             timeslotProps = {timeslotProps}
             timeslots = {timeSlotGen(nextProps.location.state.apptType, '12:00 P', 8*(60/nextProps.location.state.apptType))}
+            onSelectTimeslot = {onSelectTimeslot}
         />
 
         <Link to='/calendar/1'>

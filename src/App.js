@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Landing from './Landing/Landing';
 import {Reserve1, Reserve2, Reserve3, Reserve4, Reserve5} from './Reserve/Reserve';
 import 'rmwc/dist/styles';
